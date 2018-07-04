@@ -1,11 +1,11 @@
 /**
 Raymond Zapata
-Final assignment 
+
 */
 
 import java.util.Scanner;
 
-public class finalRZ {
+public class ttt {
 	public static void main(String[] args){
 		splash();
 		vsComputer();
@@ -37,7 +37,6 @@ public class finalRZ {
 			}
 			else {
 				switchPlayers(game, skynet);
-				clear();
 				game.checkWinner();
 			}
 
@@ -69,10 +68,10 @@ public class finalRZ {
 
 	/**
 	futileHumanMove()
+	Function for operations related to the human's turn to pick a move on the gameboard. 
 	*/
 	public static void futileHumanMove(gameboard game){
 		Scanner keyboard = new Scanner(System.in);
-		clear();
 		game.displayGrid();
 		System.out.println("Human, make your move.");
 		String input = keyboard.nextLine();
@@ -83,17 +82,4 @@ public class finalRZ {
 		}
 	}
 
-	/**
-	clear() clear the screen hopefully 
-	*/
-	public static void clear(){
-		// System.out.print("\033[H\033[2J");  // ancsi escape codes
-		// System.out.flush(); 
-		// Runtime.getRuntime().exec("cls"); 
-/*		for(int i = 0; i < 100; i++) {
-		    System.out.println("\b") ;
-		}
-*/	
-		// System.out.print("\f");
-	}
 }
