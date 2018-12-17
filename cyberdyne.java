@@ -10,6 +10,7 @@ public class cyberdyne{
 
 /**
 	constructor 
+	rather than put the gameboard object through terminator i could put it in through the constructor, and then i wont have to worry at all about tossing it around through perameters. 
 */
 	public cyberdyne(){
 		// System.out.println("I'm a cybernetic organism."); 
@@ -58,7 +59,7 @@ public class cyberdyne{
 			systematic(game);
 	}
 /**
-	systematic()
+	systematic() event handler 
 */
 	private void systematic(gameboard game){
 		if (winBlockPlan(game, 0)){} 		//try to win the game 
@@ -68,7 +69,7 @@ public class cyberdyne{
 			winBlockPlan(game, 3);			//random spot picker 
 	}
 /**
-	winBlockPlan() 
+	winBlockPlan() event handler 
 	these functions are for finding a potential immediate win of the computer, or blocking an impededing win of the human. 
 */
 	private boolean winBlockPlan(gameboard game, int type){
@@ -91,6 +92,21 @@ public class cyberdyne{
 		return madeMove;
 	}
 
+/*	for this to work you're going to have to change the available test in finalfrontier regarding available, since i'm relying on the gameboard interpreation of the flag which is -1, instead of 10 as was written in here. */
+
+	private boolean wbp(gameboard game, int type){
+		madeMove = false; 
+		for (int i = 0; i < 9; i++){
+			available = game.statusofpartsA(i); 
+			if (available != -1){
+				cyberneticOrganism = game.statusofpartsX(i);
+				human = game.statusofpartsO(i);
+				finalFrontier(game, type); 
+				if (madeMove) return madeMove; 
+			}
+		}
+		return madeMove; 
+	}
 	/**
 	xDown()
 	*/
@@ -124,7 +140,9 @@ public class cyberdyne{
 	}
 
 /**
-  finalFrontier()
+  finalFrontier() event handler 
+  maybe illogical cohesion here 
+  plus, every routine leading up to here for type 2 explicitly leaves cyberorg and human at 0 seemingly on purpose, yet case 2 clearly needs those variables checked for it run. so case 2 never worked as long as i had this stupid program. i don't remember why i did that, maybe case 2 was ruining something. 
 */
 	private void finalFrontier(gameboard game, int type){
 		switch (type){
