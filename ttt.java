@@ -37,10 +37,12 @@ public class ttt {
 			}
 			else {
 				switchPlayers(game, skynet);
+				// game.displayGrid();
 				game.checkWinner();
 			}
 
 			if (game.isGameOver()){
+				game.displayGrid();
 				System.out.println("Play again? y/Y or any other key to quit.");
 				// get string nextline
 				stuff = keyboard.nextLine();

@@ -52,7 +52,7 @@ checks the array to see if anyone has won the game yet.
 */
 	public void checkWinner(){
 		if (moves > 4){
-			monitor.check(); 
+			// monitor.check(); 
 			if (gameover){
 				System.out.println("amazing! the " + monitor.winner + " has won the game!"); 
 			}
@@ -91,9 +91,10 @@ checks the array to see if anyone has won the game yet.
 	/**
 	setSpace() used primarily for the computer entry. 
 	*/
-	public void setSpace(int place){
-		grid[place] = 'O';
+	public void setSpace(int place, char lett){
+		grid[place] = lett;
 		moves++;
+		monitor.check();
 	}
 
 	/**
@@ -118,8 +119,10 @@ checks the array to see if anyone has won the game yet.
 			}
 			else {
 				int place = Integer.parseInt(input);
-				grid[place] = 'X'; 
-				moves++; 
+				setSpace(place, 'X');
+				// grid[place] = 'X'; 
+				// moves++; 
+				// monitor.check(); 
 			}
 		}
 		return valid; 
@@ -179,7 +182,7 @@ checks the array to see if anyone has won the game yet.
 		}
 
 		public void reset(){
-			for (int i = 0; i < 9; i++){
+			for (int i = 0; i < 8; i++){
 				s[i] = new Status(); 
 			}
 		}
@@ -221,16 +224,17 @@ checks the array to see if anyone has won the game yet.
 			else s[statposition].availablePosition = pa; 
 			o = 0;
 			x = 0;
+			//does pa need to be reset as well? what are the consequences if not?
 		}
 
 		private void testWinner(){
 			if (o == 3){
 				gameover = true;
-				winner = "human"; 
+				winner = "computer"; 
 			}
 			else if (x == 3){
 				gameover = true;
-				winner = "computer";
+				winner = "human";
 			}
 		}
 
