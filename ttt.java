@@ -28,7 +28,7 @@ public class ttt {
 		Scanner keyboard = new Scanner(System.in);
 		String stuff ="";
 		gameboard game = new gameboard();
-		cyberdyne skynet = new cyberdyne();
+		cyberdyne skynet = new cyberdyne(game);
 
 		while (!game.isGameOver()){
 			if (game.itsaTie()){
@@ -62,7 +62,7 @@ public class ttt {
 	*/
 	public static void switchPlayers(gameboard game, cyberdyne skynet){
 		if (game.getMoves() % 2 == 0){
-			skynet.terminator(game);
+			skynet.terminator();
 		}
 		else {
 			futileHumanMove(game);
