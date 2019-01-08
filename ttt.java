@@ -19,7 +19,7 @@ public class ttt {
 		String format = "";
 		System.out.print("tick tack tow game extraordinaire \n");
 		System.out.printf(format, "");
-		String about = "";
+		// String about = "";
 	}
 /**
 	vsComputer()
@@ -54,6 +54,7 @@ public class ttt {
 				}
 			}
 		}
+		keyboard.close();
 	}
 
 	/**
@@ -82,6 +83,7 @@ public class ttt {
 			System.out.println("HUMAN ERROR");
 			input = keyboard.nextLine();
 		}
+		keyboard.close();
 	}
 
 }
