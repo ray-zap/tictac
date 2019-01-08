@@ -72,8 +72,8 @@ public class cyberdyne{
 
 /*	
 winblockplan wbp
-for this to work you're going to have to change the available test in finalfrontier regarding available, 
- * since i'm relying on the gameboard interpretation of the flag which is -1, instead of 10 as was written in here. but actually, i should just remove the available test in final frontier since i test for available in wbp. */
+event handler picks up the data regarding each winning move (a winning move being three positions on the board across up and down, each row and column's three positions.) from the gameboard class' API and sends that to be tested in finalfrontier. Really should change the name of that funcition.. 
+ */
 
 	private boolean wbp(gameboard game, int type){
 		madeMove = false; 
