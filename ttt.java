@@ -83,7 +83,7 @@ public class ttt {
 			System.out.println("HUMAN ERROR");
 			input = keyboard.nextLine();
 		}
-		keyboard.close();
+		// keyboard.close();
 	}
 
 }
