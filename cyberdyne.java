@@ -70,8 +70,10 @@ public class cyberdyne{
 	}
 
 
-/*	for this to work you're going to have to change the available test in finalfrontier regarding available, 
- * since i'm relying on the gameboard interpretation of the flag which is -1, instead of 10 as was written in here. */
+/*	
+winblockplan wbp
+for this to work you're going to have to change the available test in finalfrontier regarding available, 
+ * since i'm relying on the gameboard interpretation of the flag which is -1, instead of 10 as was written in here. but actually, i should just remove the available test in final frontier since i test for available in wbp. */
 
 	private boolean wbp(gameboard game, int type){
 		madeMove = false; 
@@ -99,29 +101,29 @@ public class cyberdyne{
 	private void finalFrontier(gameboard game, int type){
 		switch (type){
 			case 0: //try to win the game, 
-				if (cyberneticOrganism == 2 && available < 9){ // win the game. 
+				if (cyberneticOrganism == 2 ){ // win the game. 
 					game.setSpace(available, 'O');
 					madeMove = true;
 				}
 			break;
 			case 1: //block human from winning.
-				if (human == 2 && available < 9){ //block the human from winning
+				if (human == 2 ){ //block the human from winning
 					game.setSpace(available, 'O'); 
 					madeMove = true;
 					// System.out.println("get to the choppa!");
 				}			
 			break;
 			case 2: //there are no immediate threats of or potential wins, so plan ahead
-				if (cyberneticOrganism == 1 && available < 9 && human == 0){
+				if (cyberneticOrganism == 1 && human == 0){
 					game.setSpace(available, 'O');
 					madeMove = true;
 				}
 			break;
 			case 3: //there is no way to win the game, so just pick a spot. 
-				if (available < 9){
+				// if (available < 9){
 					game.setSpace(available, 'O');
 					madeMove = true;
-				}
+				// }
 			break;
 		}
 
