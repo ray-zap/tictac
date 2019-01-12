@@ -10,8 +10,7 @@ public class cyberdyne{
 	private gameboard game; 
 
 /**
-	constructor 
-	rather than put the gameboard object through terminator i could put it in through the constructor, and then i wont have to worry at all about tossing it around through perameters. 
+	constructor
 */
 	public cyberdyne(gameboard play){
 		game = play; 
@@ -19,46 +18,42 @@ public class cyberdyne{
 	}
 /**
 	terminator() 
-	serves as the starting point for all of the AI of the computer's game play. 
+	serves as the starting point for all of the AI of the computer's game play.
+    012
+    345
+    678
 */
 	public void terminator(){
 		if (game.getMoves() == 2){
-			if (game.getSpace(0) == 'X' || game.getSpace(2) == 'X' || game.getSpace(6) == 'X' || game.getSpace(8) == 'X'){ // testing for cowardly three corner technique
-				if (game.positionAvailability("1")){
-					game.setSpace(1, 'O');
-				}
-				else if (game.positionAvailability("3")){
-					game.setSpace(3, 'O');
-				}
-				else if (game.positionAvailability("5")){
-					game.setSpace(5, 'O');
-				}
-				else if (game.positionAvailability("7")){
-					game.setSpace(7, 'O');
-				}
-				// {game.setSpace(0, 'O');}
+		    // this, foolishly, has been all along checking the corners on the humans first move and then placing the O at a edge, instead of the
+            // center all along??? it was supposed to be checking if an edge was taken and then placing the O adjacent to it.
+            int move = 0;
+            //human chose a corner
+			if (game.getSpace(move = 1) == 'X' || game.getSpace(move = 3) == 'X' || game.getSpace(move = 5) == 'X' || game.getSpace(move = 7) == 'X') { // testing for cowardly three corner technique
+                switch (move) {
+                    case 1:
+                        game.setSpace(0, 'O');
+                        break;
+                    case 3:
+                        game.setSpace(0, 'O');
+                        break;
+                    case 5:
+                        game.setSpace(8, 'O');
+                        break;
+                    case 7:
+                        game.setSpace(8, 'O');
+                        break;
+                }
+            }
+			//human chose an edge
+			else if (game.getSpace(0) == 'X' || game.getSpace(2) == 'X' || game.getSpace(6) == 'X' || game.getSpace(8) == 'X'){
+                    game.setSpace(4, 'O');
 			}
-			else if (game.positionAvailability("4")){
-				game.setSpace(4, 'O');
-			}
-			else 
-				systematic();
+            //human chose the center
+            else game.setSpace(0, 'O');
 		}
-		else if (game.getMoves() == 4){
-			if (wbp(0)){
 
-			}
-			else if (wbp(1)){
-
-			}
-			else if (game.positionAvailability("4")){
-				game.setSpace(4, 'O');
-			}
-			else 
-				systematic();
-		}
-		else 
-			systematic();
+		else systematic();
 	}
 /**
 	systematic() event handler 
@@ -72,9 +67,11 @@ public class cyberdyne{
 	}
 
 
-/*	
+/**
 winblockplan wbp
-event handler picks up the data regarding each winning move (a winning move being three positions on the board across up and down, each row and column's three positions.) from the gameboard class' API and sends that to be tested in finalfrontier. Really should change the name of that funcition.. 
+picks up the data regarding each winning move (a winning move being three positions on the board across
+ up and down, each row and column's three positions.) from the gameboard class' API and sends that to be tested in
+ finalfrontier if there's an available position in the cross, row or column.
  */
 
 	private boolean wbp(int type){
@@ -94,11 +91,7 @@ event handler picks up the data regarding each winning move (a winning move bein
 
 /**
   finalFrontier() event handler 
-  maybe illogical cohesion here 
-  
-  plus, every routine leading up to here for type 2 explicitly leaves cyberorg and human at 0 seemingly on purpose, 
-  yet case 2 clearly needs those variables checked for it run. so case 2 never worked as long as i had this stupid 
-  program. i don't remember why i did that, maybe case 2 was ruining something. 
+  maybe illogical cohesion here
 */
 	private void finalFrontier(int type){
 		switch (type){
@@ -128,6 +121,5 @@ event handler picks up the data regarding each winning move (a winning move bein
 				// }
 			break;
 		}
-
 	}
 }
