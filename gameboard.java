@@ -120,9 +120,6 @@ checks the array to see if anyone has won the game yet.
 			else {
 				int place = Integer.parseInt(input);
 				setSpace(place, 'X');
-				// grid[place] = 'X'; 
-				// moves++; 
-				// monitor.check(); 
 			}
 		}
 		return valid; 
