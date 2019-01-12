@@ -25,11 +25,9 @@ public class cyberdyne{
 */
 	public void terminator(){
 		if (game.getMoves() == 2){
-		    // this, foolishly, has been all along checking the corners on the humans first move and then placing the O at a edge, instead of the
-            // center all along??? it was supposed to be checking if an edge was taken and then placing the O adjacent to it.
             int move = 0;
             //human chose a corner
-			if (game.getSpace(move = 1) == 'X' || game.getSpace(move = 3) == 'X' || game.getSpace(move = 5) == 'X' || game.getSpace(move = 7) == 'X') { // testing for cowardly three corner technique
+			if (game.getSpace(move = 1) == 'X' || game.getSpace(move = 3) == 'X' || game.getSpace(move = 5) == 'X' || game.getSpace(move = 7) == 'X') {
                 switch (move) {
                     case 1:
                         game.setSpace(0, 'O');
