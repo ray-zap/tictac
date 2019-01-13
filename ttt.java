@@ -19,7 +19,7 @@ public class ttt {
 		String format = "";
 		System.out.print("tick tack tow game extraordinaire \n");
 		System.out.printf(format, "");
-		String about = "";
+		// String about = "";
 	}
 /**
 	vsComputer()
@@ -28,7 +28,7 @@ public class ttt {
 		Scanner keyboard = new Scanner(System.in);
 		String stuff ="";
 		gameboard game = new gameboard();
-		cyberdyne skynet = new cyberdyne();
+		cyberdyne skynet = new cyberdyne(game);
 
 		while (!game.isGameOver()){
 			if (game.itsaTie()){
@@ -37,10 +37,12 @@ public class ttt {
 			}
 			else {
 				switchPlayers(game, skynet);
+				// game.displayGrid();
 				game.checkWinner();
 			}
 
 			if (game.isGameOver()){
+				game.displayGrid();
 				System.out.println("Play again? y/Y or any other key to quit.");
 				// get string nextline
 				stuff = keyboard.nextLine();
@@ -52,6 +54,7 @@ public class ttt {
 				}
 			}
 		}
+		keyboard.close();
 	}
 
 	/**
@@ -59,7 +62,7 @@ public class ttt {
 	*/
 	public static void switchPlayers(gameboard game, cyberdyne skynet){
 		if (game.getMoves() % 2 == 0){
-			skynet.terminator(game);
+			skynet.terminator();
 		}
 		else {
 			futileHumanMove(game);
@@ -80,6 +83,7 @@ public class ttt {
 			System.out.println("HUMAN ERROR");
 			input = keyboard.nextLine();
 		}
+		// keyboard.close();
 	}
 
 }

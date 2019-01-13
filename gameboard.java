@@ -5,8 +5,9 @@
 
 public class gameboard{
 	private boolean gameover; 
-	public int moves; 
-	char[] grid;
+	private int moves; 
+	private char[] grid;
+	private Statscollection monitor = new Statscollection(); 
 
 /**
 	constructor 
@@ -29,6 +30,7 @@ public class gameboard{
 		}
 		moves = 1;
 		gameover = false; 
+		monitor.reset(); 
 	}
 
 	/**
@@ -50,117 +52,9 @@ checks the array to see if anyone has won the game yet.
 */
 	public void checkWinner(){
 		if (moves > 4){
-			int oughts = 0; 
-			int naughts = 0;
-			String winO = "the computer has won the game! \nI know now why you cry [wipes a tear from Johns face] but its something that I can never do ";
-			String winN = "The human being has won the game!";
-			if (!gameover){ // check the rows for a number one winner 
-				for (int i = 0; i < 9; i++){
-					if (grid[i] == 'O'){
-						oughts++;
-					}
-					else if (grid[i] == 'X'){
-						naughts++;
-					}
-					if ((i + 1) % 3 == 0){
-						if (oughts == 3){
-							displayGrid();
-							System.out.println(winO);
-							gameover = true;
-							i = 10;
-						}
-						else if (naughts == 3){
-							displayGrid();
-							System.out.println(winN);
-							gameover = true;
-							i = 10;
-						}
-						else {
-							oughts = 0;
-							naughts = 0;
-						}
-					}
-				}
-			}
-			if (!gameover){ // check vertically for the best winner of all 
-				int vertical = 0;
-				do {
-					for (int i = vertical, count = 1; i < 9; i += 3, count++){
-						if (grid[i] == 'O'){
-							oughts++;
-						}
-						else if (grid[i] == 'X'){
-							naughts++;
-						}
-						if (count % 3 == 0){
-							if (oughts == 3){
-								displayGrid();
-								System.out.println(winO);
-								gameover = true;
-								i = 10;
-							}
-							else if (naughts == 3){
-								displayGrid();
-								System.out.println(winN);
-								gameover = true;
-								i = 10;
-							}
-							else {
-								oughts = 0;
-								naughts = 0;
-							}
-						}
-					}
-					vertical++;	
-				} while (vertical < 3 && !gameover);
-			}
-			if (!gameover){ //check across down 
-				for (int i = 0; i < 9; i += 4){
-					if (grid[i] == 'O'){
-						oughts++;
-					}
-					else if (grid[i] == 'X'){
-						naughts++;
-					}
-				}
-				if (oughts == 3){
-					displayGrid();
-					System.out.println(winO);
-					gameover = true;
-				}
-				else if (naughts == 3){
-					displayGrid();
-					System.out.println(winN);
-					gameover = true;
-				}
-				else {
-					oughts = 0;
-					naughts = 0;
-				}
-			}
-			if (!gameover){ //check across up
-				for (int i = 2; i < 8; i +=2){
-					if (grid[i] == 'O'){
-						oughts++;
-					}
-					else if (grid[i] == 'X'){
-						naughts++;
-					}
-				}
-				if (oughts == 3){
-					displayGrid();
-					System.out.println(winO);
-					gameover = true;
-				}
-				else if (naughts == 3){
-					displayGrid();
-					System.out.println(winN);
-					gameover = true;
-				}
-				else {
-					oughts = 0;
-					naughts = 0;
-				}
+			// monitor.check(); 
+			if (gameover){
+				System.out.println("amazing! the " + monitor.winner + " has won the game!"); 
 			}
 		}
 	}
@@ -197,9 +91,10 @@ checks the array to see if anyone has won the game yet.
 	/**
 	setSpace() used primarily for the computer entry. 
 	*/
-	public void setSpace(int place){
-		grid[place] = 'O';
+	public void setSpace(int place, char lett){
+		grid[place] = lett;
 		moves++;
+		monitor.check();
 	}
 
 	/**
@@ -224,8 +119,7 @@ checks the array to see if anyone has won the game yet.
 			}
 			else {
 				int place = Integer.parseInt(input);
-				grid[place] = 'X'; 
-				moves++; 
+				setSpace(place, 'X');
 			}
 		}
 		return valid; 
@@ -246,5 +140,147 @@ checks the array to see if anyone has won the game yet.
 	/**
 	
 	*/
+	public int statusofpartsX(int i){
+		return monitor.naughts(i); 
+	}
+	public int statusofpartsO(int i){
+		return monitor.oughts(i); 
+	}
+	public int statusofpartsA(int i){
+		return monitor.available(i); 
+	}
 
+
+	//inner classes for handling the status of each of the potential win types, ie rows, cols etc. provides dynamic programming to reduce the number of times the grid is traveresed. especially useful for the api of the computer challenger class. 
+	//
+	class Status{
+		public int oughts; 
+		public int naughts; 
+		public int availablePosition; 
+
+		Status(){
+			oughts = 0; 
+			naughts = 0; 
+			availablePosition = -1; 
+		}
+
+	}
+
+	class Statscollection{
+		int o = 0; 
+		int x = 0;
+		int pa = -1; 
+		Status[] s = new Status[8];
+		int statposition = 0; 
+		public String winner = ""; 
+
+		Statscollection(){
+			reset(); 
+		}
+
+		public void reset(){
+			for (int i = 0; i < 8; i++){
+				s[i] = new Status(); 
+			}
+		}
+
+		public void check(){
+			statposition = 0; 
+			across(); 
+			rows(); 
+			columns();
+		}
+
+		private void rows(){
+			if (!gameover){ // check the rows  
+				for (int i = 0; i < 9; i++){
+					examineGrid(i); 
+					if ((i + 1) % 3 == 0){
+						testWinner();
+						updateCollection(); 
+						statposition++; 						
+					}
+				}
+			}
+		}
+
+		private void examineGrid(int i){
+			if (grid[i] == 'O'){
+				o++;
+			}
+			else if (grid[i] == 'X'){
+				x++;
+			}
+			else pa = i; 
+		}
+
+		private void updateCollection(){
+			s[statposition].oughts = o; 
+			s[statposition].naughts = x; 
+			if (o + x == 3) s[statposition].availablePosition = -1; 
+			else s[statposition].availablePosition = pa; 
+			o = 0;
+			x = 0;
+			//does pa need to be reset as well? what are the consequences if not?
+		}
+
+		private void testWinner(){
+			if (o == 3){
+				gameover = true;
+				winner = "computer"; 
+			}
+			else if (x == 3){
+				gameover = true;
+				winner = "human";
+			}
+		}
+
+		private void columns(){
+			if (!gameover){ // check vertically 
+				int vertical = 0;
+				do {
+					for (int i = vertical, count = 1; i < 9; i += 3, count++){
+						examineGrid(i); 
+						if (count % 3 == 0){
+							testWinner();
+							updateCollection(); 
+							statposition++; 	
+						}
+					}
+					vertical++;	
+				} while (vertical < 3 && !gameover);
+			}
+		}
+
+		private void across(){
+			if (!gameover){ //check across down 
+				for (int i = 0; i < 9; i += 4){
+					examineGrid(i); 
+				}
+				testWinner(); 
+				updateCollection();
+				statposition++; 
+			}
+			if (!gameover){ //check across up
+				for (int i = 2; i < 8; i +=2){
+					examineGrid(i); 
+				}
+				testWinner(); 
+				updateCollection();
+				statposition++; 
+			}
+		}
+
+		public int oughts(int stat){
+			return s[stat].oughts; 
+		}
+
+		public int naughts(int stat){
+			return s[stat].naughts; 
+		}
+
+		public int available(int stat){
+			return s[stat].availablePosition;
+		}
+	}
 }
